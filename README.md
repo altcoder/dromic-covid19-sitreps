@@ -42,14 +42,15 @@ $ airflow list_dags
 5. Run
 ```
 $ airflow etl_dromic_covid_19_sitreps execute_notebook 2020-04-04
-```
 
 -------------------------------------------------------------------
 DAGS
 -------------------------------------------------------------------
 ...
+etl_dromic_covid_19_sitreps
 github_poll_trigger
 ...
+```
 
 ## CONTRIBUTING
 
