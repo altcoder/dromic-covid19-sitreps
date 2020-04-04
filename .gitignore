@@ -1,4 +1,11 @@
+# Conda
 conda-env/
+
+# Airflow
+airflow.cfg
+airflow.db
+logs/
+unittests.cfg
 
 .DS_Store
 *.log
