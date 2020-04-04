@@ -1,0 +1,10 @@
+conda-env/
+
+.DS_Store
+*.log
+tmp/
+
+*.py[cod]
+*.egg
+build
+htmlcov
