@@ -20,6 +20,7 @@ $ pip install -r requirements.txt
 $ export AIRFLOW_HOME=$PWD
 $ airflow upgradedb
 ```
+
 4. List Airflow DAGs 
 ```
 $ airflow list_dags
@@ -38,5 +39,8 @@ github_poll_trigger
 $ airflow test github_poll_trigger check_commits_dromic_covid_19_sitreps 2020-04-04
 ```
 
-
+6. Start coding
+```
+$ jupyter-notebook
+```
 
