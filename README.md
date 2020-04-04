@@ -17,7 +17,13 @@ $ git clone https://github.com/[GITHUB_USERNAME]/[REPO_NAME].git
 $ cd [REPO_NAME]
 ```
 
-# CONTRIBUTING
+2. Setup your Python dependencies
+
+``` 
+$ pip install -r requirements.txt
+```
+
+## CONTRIBUTING
 
 Contributions are always welcome, no matter how large or small. Before contributing,
 please read the [code of conduct](.github/CODE_OF_CONDUCT.md).
