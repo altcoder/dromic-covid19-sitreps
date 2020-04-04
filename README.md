@@ -11,6 +11,8 @@ Generate machine readable data on DSWD DROMIC COVID-19 SitReps in the Philippine
 
 ## Quickstart
 
+This project uses Apache Airflow to run Python Notebooks as jobs. 
+
 1. Clone this repo.
 
 ```
@@ -21,8 +23,33 @@ $ cd [REPO_NAME]
 2. Setup your Python dependencies
 
 ``` 
+$ pip install -r requirements-airflow.txt
 $ pip install -r requirements.txt
 ```
+
+3. Set environment variables
+
+```
+$ export AIRFLOW_HOME=$PWD
+$ airflow upgradedb
+```
+
+4. List Airflow DAGs 
+```
+$ airflow list_dags
+```
+
+5. Run
+```
+$ airflow etl_dromic_covid_19_sitreps execute_notebook 2020-04-04
+```
+
+-------------------------------------------------------------------
+DAGS
+-------------------------------------------------------------------
+...
+github_poll_trigger
+...
 
 ## CONTRIBUTING
 
