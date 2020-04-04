@@ -5,6 +5,7 @@ from airflow.operators.python_operator import BranchPythonOperator
 from airflow.operators.dagrun_operator import TriggerDagRunOperator
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.configuration import conf
+import logging
 import json
 import requests
 from datetime import datetime, timedelta
@@ -28,13 +29,13 @@ def get_last_commit(ds, **kwargs):
 
     url = url_template.format(since)
 
-    print("Loading data from " + url)
+    logging.info('Loading data from %s' % url)
 
     response = requests.get(url)
     commits = response.json()
 
     if len(commits) > 0:
-        print("We should run now.")
+        logging.info('New data available. Running %s.' % name.lower())
         return f"trigger_{name.lower()}"
     else:
         return "stop"
