@@ -1,4 +1,7 @@
 {
+  "interval": {
+    "dromic_covid19_sitreps": "@daily"
+  },
   "sources": {
     "dromic_covid19_sitreps": "https://api.github.com/repos/altcoder/dromic-covid19-sitreps/commits?since={}&path=datasets/sitreps"
   }
