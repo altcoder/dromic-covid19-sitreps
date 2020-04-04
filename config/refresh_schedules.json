@@ -1,0 +1,5 @@
+{
+  "sources": {
+    "dromic-covid19-sitreps": "https://api.github.com/repos/altcoder/dromic-covid19-sitreps/commits?since={}&path=datasets/sitreps"
+  }
+}
