@@ -1,6 +1,7 @@
 # DROMIC COVID19 SitReps Data
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://raw.githubusercontent.com/altcoder/[REPO_NAME]/master/LICENSE)
+![Airflow/DAG](https://github.com/altcoder/dromic-covid19-sitreps/workflows/Airflow/DAG/badge.svg)
 
 Generate machine readable data on DSWD DROMIC COVID-19 SitReps in the Philippines. 
 
