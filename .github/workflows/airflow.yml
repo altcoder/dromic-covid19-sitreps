@@ -53,10 +53,5 @@ jobs:
     - name: Run DAG tests
       run: |
         export AIRFLOW_HOME=${{ GITHUB.workspace }}
-        export ENVIRONMENT=CI
-        for i in $AIRFLOW_HOME/notebooks/* ; do
-          load=`basename $i`;
-          load=$(echo "$load" | sed 's/\.[^.]*$//');
-          airflow test etl_$load execute_notebook 2020-04-04;
-          done
+        export ENVIRONMENT=TEST
         airflow test github_poll_trigger check_commits_dromic_covid19_sitreps 2020-04-04
