@@ -37,12 +37,19 @@ jobs:
         airflow upgradedb
         airflow variables -s ENVIRONMENT TEST
         airflow variables -s GSHEET_SPREADSHEET_ID ${{ secrets.GSHEET_SPREADSHEET_ID }}
+        echo "GSHEET_SPREADSHEET_ID"
         airflow variables -s GSHEET_PROJECT_ID ${{ secrets.GSHEET_PROJECT_ID }}
+        echo "GSHEET_PROJECT_ID"
         airflow variables -s GSHEET_PRIVATE_KEY_ID ${{ secrets.GSHEET_PRIVATE_KEY_ID }}
+        echo "GSHEET_PRIVATE_KEY_ID"
         airflow variables -s GSHEET_PRIVATE_KEY ${{ secrets.GSHEET_PRIVATE_KEY }}
+        echo "GSHEET_PRIVATE_KEY"
         airflow variables -s GSHEET_CLIENT_EMAIL ${{ secrets.GSHEET_CLIENT_EMAIL }}
+        echo "GSHEET_CLIENT_EMAIL"
         airflow variables -s GSHEET_CLIENT_ID ${{ secrets.GSHEET_CLIENT_ID }}
+        echo "GSHEET_CLIENT_ID"
         airflow variables -s GSHEET_CERT_URL ${{ secrets.GSHEET_CERT_URL }}
+        echo "GSHEET_CERT_URL"
         # airflow variables -s S3_BUCKET ${{ secrets.AWS_S3_BUCKET }}
         # airflow variables -s S3_PATH ${{ secrets.AWS_S3_PATH }}
         # airflow variables -s AWS_ACCESS_KEY_ID ${{ secrets.AWS_ACCESS_KEY_ID }}
