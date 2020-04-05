@@ -12,6 +12,7 @@ $ cd [REPO_NAME]
 ``` 
 $ conda create --prefix ./conda-env
 $ conda activate ./conda-env
+$ pip install -r requirements-airflow.txt
 $ pip install -r requirements.txt
 ```
 
@@ -59,7 +60,7 @@ $ airflow webserver
 
 3. Trigger dag 
 ```
-$ airflow trigger_dag -e 2020-04-04 github_poll_tirgger
+$ airflow trigger_dag -e 2020-04-04 github_poll_trigger
 ```
 
 # Production Deployment (Astronomer)
