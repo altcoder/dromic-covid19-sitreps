@@ -94,7 +94,10 @@ def create_dag(dag_id, args):
             credentials = ServiceAccountCredentials.from_json_keyfile_dict(keyfile_dict, scopes=scopes)
             gc = gspread.authorize(credentials)
             sheet = gc.open_by_key(Variable.get('GSHEET_SPREADSHEET_ID'))
-            for output_file in glob.glob(output_file_glob + ".csv"):
+            sorted_files =list(glob.glob(output_file_glob + ".csv"))
+            sorted_files.sort()
+            #sorted_files.sort()
+            for output_file in sorted_files:
                 logging.info('Processing %s' % output_file)
                 file_name = os.path.basename(output_file)
                 tab_name = os.path.splitext(file_name)[0].replace('-', '_').replace(basename+'_', '')
