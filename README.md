@@ -30,9 +30,10 @@ $ export AIRFLOW_HOME=$PWD
 $ airflow upgradedb
 ```
 
-4. Run
+4. Run to extract Funds and Stockpiles (FAS) and Cost of Assistance (COA) data
 ```
-$ airflow etl_dromic_covid_19_sitreps execute_notebook 2020-04-04
+$ airflow etl_dromic_covid_19_sitreps_fas execute_notebook 2020-04-04
+$ airflow etl_dromic_covid_19_sitreps_coa execute_notebook 2020-04-04
 ```
 
 5. View generated files in output directory 
