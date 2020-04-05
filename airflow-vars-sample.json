@@ -1,0 +1,10 @@
+{
+    "ENVIRONMENT": "DEV",
+    "GSHEET_SPREADSHEET_ID": "1eS44h4aIvjXspFFnTd3rEepKaL0nQNcMX_Z8Jnfclp4",
+    "GSHEET_PROJECT_ID": "dromic-covid19-sitreps",
+    "GSHEET_PRIVATE_KEY_ID": "...",
+    "GSHEET_PRIVATE_KEY": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n",
+    "GSHEET_CLIENT_EMAIL": "api-prod@dromic-covid19-sitreps.iam.gserviceaccount.com",
+    "GSHEET_CLIENT_ID": "104146664519268161643",
+    "GSHEET_CERT_URL": "https://www.googleapis.com/robot/v1/metadata/x509/api-prod%40dromic-covid19-sitreps.iam.gserviceaccount.com"
+}

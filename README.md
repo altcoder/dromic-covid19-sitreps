@@ -3,15 +3,16 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://raw.githubusercontent.com/altcoder/[REPO_NAME]/master/LICENSE)
 ![Airflow/DAG](https://github.com/altcoder/dromic-covid19-sitreps/workflows/Airflow/DAG/badge.svg)
 
-Generate machine readable data on DSWD DROMIC COVID-19 SitReps in the Philippines. 
+Generate machine readable data on DSWD DROMIC COVID-19 SitReps in the
+Philippines.
+
+[View Datasets](https://docs.google.com/spreadsheets/d/1eS44h4aIvjXspFFnTd3rEepKaL0nQNcMX_Z8Jnfclp4/edit?usp=sharing)
 
 #### Official Source 
 
 [DSWD DROMIC Virtual OpCen Coronavirus Sitreps](https://dromic.dswd.gov.ph/coronavirus-disease-covid-19-31-dec-2019/)
 
 ## Quickstart
-
-This project uses Apache Airflow to run Python Notebooks as jobs. 
 
 1. Clone this repo.
 
@@ -34,23 +35,21 @@ $ export AIRFLOW_HOME=$PWD
 $ airflow upgradedb
 ```
 
-4. List Airflow DAGs 
-```
-$ airflow list_dags
-```
-
-5. Run
+4. Run
 ```
 $ airflow etl_dromic_covid_19_sitreps execute_notebook 2020-04-04
-
--------------------------------------------------------------------
-DAGS
--------------------------------------------------------------------
-...
-etl_dromic_covid_19_sitreps
-github_poll_trigger
-...
 ```
+
+5. View generated files in output directory 
+
+```
+$ ls output
+```
+
+## Development
+
+This project uses Apache Airflow to run Python Notebooks as jobs. Follow [this instuctions](docs/SETUP.md) to setup your local development environment. 
+
 
 ## CONTRIBUTING
 

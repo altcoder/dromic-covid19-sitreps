@@ -1,3 +1,7 @@
+# Secret
+credentials/
+airflow-vars.json
+
 # Conda
 conda-env/
 

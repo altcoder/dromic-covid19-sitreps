@@ -1,3 +1,8 @@
 pandas
 requests
 boto3
+matplotlib
+seaborn
+python-docx
+oauth2client
+gspread

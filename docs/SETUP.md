@@ -15,13 +15,15 @@ $ conda activate ./conda-env
 $ pip install -r requirements.txt
 ```
 
-3. Set environment variables
+3. Setup environment
 ```
-$ export AIRFLOW_HOME=$PWD
-$ airflow upgradedb
+$ cp airflow-vars-sample.json airflow-vars.json
+[edit airflow-vars.json]
+$ source init.sh
+
 ```
 
-4. List Airflow DAGs 
+4. List Airflow DAGs (testing) 
 ```
 $ airflow list_dags
 
@@ -33,23 +35,14 @@ github_poll_trigger
 ...
 
 ```
-5. Setup Airflow variables
-```
-$ airflow variables -s ENVIRONMENT CI
-$ airflow variables -s S3_BUCKET [your s3 bucket]
-$ airflow variables -s AWS_ACCESS_KEY_ID [your aws access key id]
-$ airflow variables -s AWS_SECRET_ACCESS_KEY [your aws secret key]
-$ airflow variables -s SNOWFLAKE_CONNECTION SNOWFLAKE_DEV
-
-```
-6. Run test
+5. Run test DAG
 ```
 $ airflow test github_poll_trigger check_commits_dromic_covid_19_sitreps 2020-04-04
 ```
 
 6. Start coding
 ```
-$ jupyter-notebook
+$ jupyter-lab
 ```
 
 # Integration Test
