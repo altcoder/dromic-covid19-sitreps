@@ -138,35 +138,40 @@ def create_dag(dag_id, args):
 
             s3_client = boto3.client('s3', aws_access_key_id=Variable.get("AWS_ACCESS_KEY_ID"),
                                      aws_secret_access_key=Variable.get("AWS_SECRET_ACCESS_KEY"))
+            s3_path = Variable.get("AWS_S3_PATH")
             for output_file in glob.glob(output_file_glob):
-                s3_file_name = os.path.basename(output_file)
+                logging.info('Processing %s' % output_file)
+                file_name = os.path.basename(output_file)
+                s3_file_name = file_name.replace('-', '_').replace(basename+'_', '')
+                s3_table_name = basename
                 response = s3_client.upload_file(output_file,
-                                                    Variable.get("S3_BUCKET"),
-                                                    s3_file_name)
+                                                 Variable.get("AWS_S3_BUCKET"),
+                                                 s3_path + '/' + s3_table_name + '/' + s3_file_name)
 
             return response
 
         def upload_to_snowflake(task_id):
             sql_statements = []
+            snowflake_schema = Variable.get("SNOWFLAKE_SCHEMA", default_var="PUBLIC")
+            sql_statements.append(f'USE SCHEMA {snowflake_schema}')
+
+            snowflake_table_name = basename
+            truncate_st = f'TRUNCATE TABLE IF EXISTS {snowflake_table_name}'
+            sql_statements.append(truncate_st)
 
             # look for CSVs to ignest to snowflake
-            for output_file in glob.glob(output_file_glob + ".csv"):
-                s3_file_name = os.path.basename(output_file)
-                tablename = os.path.splitext(s3_file_name)[0].replace("-", "_")
-                snowflake_stage = Variable.get("ENVIRONMENT", default_var="PROD")
+            snowflake_stage = Variable.get("SNOWFLAKE_STAGE", default_var="RAW")
+            snowflake_path = Variable.get('SNOWFLAKE_PATH')
 
-                truncate_st = f'TRUNCATE TABLE {tablename}'
-                insert_st = f'copy into {tablename} from @{snowflake_stage}/{s3_file_name} file_format = (type = "csv" field_delimiter = "," NULL_IF = (\'NULL\', \'null\',\'\') EMPTY_FIELD_AS_NULL = true FIELD_OPTIONALLY_ENCLOSED_BY=\'"\' skip_header = 1)'
-                sql_statements.append(truncate_st)
-                sql_statements.append(insert_st)
-
+            insert_st = f'copy into {snowflake_table_name} from @{snowflake_stage}/{snowflake_path}/{snowflake_table_name}/ file_format = (type = "csv" field_delimiter = "," NULL_IF = (\'NULL\', \'null\',\'\') EMPTY_FIELD_AS_NULL = true FIELD_OPTIONALLY_ENCLOSED_BY=\'"\' skip_header = 1) pattern=\'.*\\.csv\''
+            sql_statements.append(insert_st)
             sql_statements.append("COMMIT")
 
             create_insert_task = SnowflakeOperator(
                 task_id=task_id,
                 sql=sql_statements,
                 autocommit=False,
-                snowflake_conn_id=Variable.get("SNOWFLAKE_CONNECTION", default_var="SNOWFLAKE"),
+                snowflake_conn_id=Variable.get("SNOWFLAKE_CONNECTION", default_var="SNOWFLAKE_PROD"),
             )
 
             return create_insert_task
@@ -198,7 +203,7 @@ def create_dag(dag_id, args):
         start >> cleanup_output_folder_task
         cleanup_output_folder_task >> execute_notebook_task
         execute_notebook_task >> upload_to_gsheet_task
-        #execute_notebook_task >> upload_to_s3_task
+        upload_to_gsheet_task >> upload_to_s3_task
         #upload_to_s3_task >> upload_to_snowflake_task
         #upload_to_snowflake_task >> end
 
