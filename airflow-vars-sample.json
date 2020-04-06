@@ -6,5 +6,13 @@
     "GSHEET_PRIVATE_KEY": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n",
     "GSHEET_CLIENT_EMAIL": "api-prod@dromic-covid19-sitreps.iam.gserviceaccount.com",
     "GSHEET_CLIENT_ID": "104146664519268161643",
-    "GSHEET_CERT_URL": "https://www.googleapis.com/robot/v1/metadata/x509/api-prod%40dromic-covid19-sitreps.iam.gserviceaccount.com"
+    "GSHEET_CERT_URL": "https://www.googleapis.com/robot/v1/metadata/x509/api-prod%40dromic-covid19-sitreps.iam.gserviceaccount.com",
+    "AWS_ACCESS_KEY_ID": "...",
+    "AWS_SECRET_ACCESS_KEY": "...",
+    "AWS_S3_BUCKET": "...",
+    "AWS_S3_PATH": "...",
+    "SNOWFLAKE_STAGE": "...",
+    "SNOWFLAKE_CONNECTION": "...",
+    "SNOWFLAKE_SCHEMA": "...",
+    "SNOWFLAKE_PATH": "..."
 }
