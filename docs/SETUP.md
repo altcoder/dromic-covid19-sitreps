@@ -17,6 +17,11 @@ $ pip install -r requirements.txt
 ```
 
 3. Setup environment
+
+**airflow-vars.json** contains airflow variables you need to upload the output
+csv files to Google Sheet, AWS S3 and/or Snowflake. These are optional.
+Recommended if you have your own storage. Make sure to look at
+`dags/notebook_dags.py` on how to use it. 
 ```
 $ cp airflow-vars-sample.json airflow-vars.json
 [edit airflow-vars.json]
