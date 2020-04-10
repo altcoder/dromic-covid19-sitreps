@@ -96,7 +96,6 @@ def create_dag(dag_id, args):
             sheet = gc.open_by_key(Variable.get('GSHEET_SPREADSHEET_ID'))
             sorted_files =list(glob.glob(output_file_glob + ".csv"))
             sorted_files.sort()
-            #sorted_files.sort()
             for output_file in sorted_files:
                 logging.info('Processing %s' % output_file)
                 file_name = os.path.basename(output_file)
@@ -127,7 +126,6 @@ def create_dag(dag_id, args):
                 response = sheet.batch_update(body)
             return response
 
-            
         def upload_to_s3():
             """Upload a file to an S3 bucket
 
@@ -200,12 +198,13 @@ def create_dag(dag_id, args):
 
         upload_to_snowflake_task = upload_to_snowflake('upload_to_snowflake')
 
-        start >> cleanup_output_folder_task
-        cleanup_output_folder_task >> execute_notebook_task
+        #start >> cleanup_output_folder_task
+        #cleanup_output_folder_task >> execute_notebook_task
+        start >> execute_notebook_task
         execute_notebook_task >> upload_to_gsheet_task
         upload_to_gsheet_task >> upload_to_s3_task
-        #upload_to_s3_task >> upload_to_snowflake_task
-        #upload_to_snowflake_task >> end
+        upload_to_s3_task >> upload_to_snowflake_task
+        upload_to_snowflake_task >> end
 
         return dag
 
