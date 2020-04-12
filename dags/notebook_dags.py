@@ -159,7 +159,7 @@ def create_dag(dag_id, args):
 
             # look for CSVs to ignest to snowflake
             snowflake_stage = Variable.get("SNOWFLAKE_STAGE", default_var="RAW")
-            snowflake_path = Variable.get('SNOWFLAKE_PATH')
+            snowflake_path = Variable.get('SNOWFLAKE_PATH', default_var='prod/dswd')
 
             insert_st = f'copy into {snowflake_table_name} from @{snowflake_stage}/{snowflake_path}/{snowflake_table_name}/ file_format = (type = "csv" field_delimiter = "," NULL_IF = (\'NULL\', \'null\',\'\') EMPTY_FIELD_AS_NULL = true FIELD_OPTIONALLY_ENCLOSED_BY=\'"\' skip_header = 1) pattern=\'.*\\.csv\''
             sql_statements.append(insert_st)
