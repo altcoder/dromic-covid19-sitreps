@@ -1,8 +1,10 @@
 {
   "interval": {
-    "dromic_covid19_sitreps": "@daily"
+    "dromic_covid19_sitreps": "@daily",
+    "dromic_covid19_sitreps_github": "@daily"
   },
   "sources": {
-    "dromic_covid19_sitreps": "https://api.github.com/repos/altcoder/dromic-covid19-sitreps/commits?since={}&path=datasets/sitreps"
+    "dromic_covid19_sitreps": "https://dromic.dswd.gov.ph/coronavirus-disease-covid-19-31-dec-2019/",
+    "dromic_covid19_sitreps_github": "https://api.github.com/repos/altcoder/dromic-covid19-sitreps/commits?since={}&path=datasets/sitreps"
   }
 }

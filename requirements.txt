@@ -6,3 +6,4 @@ seaborn
 python-docx
 oauth2client
 gspread
+beautifulsoup4
