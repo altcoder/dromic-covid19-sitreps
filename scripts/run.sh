@@ -1,3 +1,4 @@
+airflow test webpage_poll_trigger check_webpage_dromic_covid19_sitreps 2020-04-04
 airflow test etl_dromic_covid19_sitreps_fas execute_notebook 2020-04-04
 airflow test etl_dromic_covid19_sitreps_coa execute_notebook 2020-04-04
 airflow test etl_dromic_covid19_sitreps_fas upload_to_gsheet 2020-04-04
