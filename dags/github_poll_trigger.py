@@ -55,22 +55,23 @@ with dag:
 
     for name,url in schedules["sources"].items():
 
-        check_github_op = BranchPythonOperator (
-            task_id=f'check_commits_{name.lower()}',
-            python_callable=get_last_commit,
-            provide_context=True,
-            op_kwargs={"name": name, "url": url},
-            trigger_rule="all_done",
-            dag=dag,
-        )
+        if url.startswith('https://api.github'):
+            check_github_op = BranchPythonOperator (
+                task_id=f'check_commits_{name.lower()}',
+                python_callable=get_last_commit,
+                provide_context=True,
+                op_kwargs={"name": name, "url": url},
+                trigger_rule="all_done",
+                dag=dag,
+            )
 
-        trigger_etl_op = TriggerDagRunOperator(
-            task_id=f"trigger_{name.lower()}",
-            trigger_dag_id=f'etl_{name}',  
-            dag=dag
-        )
+            trigger_etl_op = TriggerDagRunOperator(
+                task_id=f"trigger_{name.lower()}",
+                trigger_dag_id=f'etl_{name}',
+                dag=dag
+            )
 
-        start_op >> check_github_op
-        check_github_op >> trigger_etl_op
-        check_github_op >> stop_op
-        trigger_etl_op >> stop_op
+            start_op >> check_github_op
+            check_github_op >> trigger_etl_op
+            check_github_op >> stop_op
+            trigger_etl_op >> stop_op
