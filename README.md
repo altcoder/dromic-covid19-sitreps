@@ -28,7 +28,7 @@ $ pip install -r requirements.txt
 3. Set environment variables
 
 ```
-$ export AIRFLOW_HOME=$PWD
+$ ./init.sh
 $ airflow upgradedb
 ```
 
