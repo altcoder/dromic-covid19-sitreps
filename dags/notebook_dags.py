@@ -16,7 +16,6 @@ import os
 import glob
 import papermill as pm
 from airflow.configuration import conf
-import tempfile
 
 import gspread
 from gspread.exceptions import WorksheetNotFound
