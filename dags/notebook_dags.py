@@ -3,7 +3,7 @@ import boto3
 import json
 import logging
 from airflow import DAG
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from airflow.contrib.hooks.snowflake_hook import SnowflakeHook
 from airflow.utils.dates import days_ago
@@ -92,7 +92,7 @@ def create_dag(dag_id, args):
             }
             credentials = ServiceAccountCredentials.from_json_keyfile_dict(keyfile_dict, scopes=scopes)
             gc = gspread.authorize(credentials)
-            sheet = gc.open_by_key(Variable.get('GSHEET_SPREADSHEET_ID'))
+            sheet = gc.open_by_key(Variable.get('GSHEET_SPREADSHEET_ID1'))
             sorted_files =list(glob.glob(output_file_glob + ".csv"))
             sorted_files.sort()
             for output_file in sorted_files:
@@ -123,6 +123,70 @@ def create_dag(dag_id, args):
                     }]
                 }
                 response = sheet.batch_update(body)
+            return response
+
+        def upload_to_gsheet_summary():
+            scopes = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+            # Change this based on your google api credentials.json file
+            keyfile_dict = {
+                "type": "service_account",
+                "project_id": Variable.get('GSHEET_PROJECT_ID'),
+                "private_key_id": Variable.get('GSHEET_PRIVATE_KEY_ID'),
+                "private_key": Variable.get('GSHEET_PRIVATE_KEY'),
+                "client_email": Variable.get('GSHEET_CLIENT_EMAIL'),
+                "client_id":  Variable.get('GSHEET_CLIENT_ID'),
+                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                "token_uri": "https://oauth2.googleapis.com/token",
+                "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                "client_x509_cert_url": Variable.get('GSHEET_CERT_URL'),
+            }
+            credentials = ServiceAccountCredentials.from_json_keyfile_dict(keyfile_dict, scopes=scopes)
+            gc = gspread.authorize(credentials)
+            sheet = gc.open_by_key(Variable.get('GSHEET_SPREADSHEET_ID2'))
+            sorted_files =list(glob.glob(output_file_glob + ".csv"))
+            sorted_files.sort()
+            filtered_content = []
+            for output_file in sorted_files:
+                logging.info('Processing %s' % output_file)
+                file_name = os.path.basename(output_file)
+                dataset_name = os.path.splitext(file_name)[0].replace('-', '_').replace(basename+'_', '')
+                sitrep_code, tab_name = dataset_name.split('_')
+                try:
+                    wks = sheet.worksheet(tab_name)
+                except WorksheetNotFound:
+                    logging.info('Creating NEW worksheet "%s"' % tab_name)
+                    #sheet.del_worksheet(wks)
+                    sheet.add_worksheet(title=tab_name, rows='100', cols='20')
+                    wks = sheet.worksheet(tab_name)
+                with open(output_root + file_name, 'r') as csv:
+                    csv_contents = csv.read()
+                    csv_rows = csv_contents.split('\n')
+                    csv_content = csv_rows[1].split(',', 1)
+                    end_time = datetime.now()
+                    start_time = end_time - timedelta(days=7) # Week on Week
+                    content_time = datetime.strptime(csv_content[0], '%Y-%m-%d %H:%M:%S')
+                    if len(filtered_content) == 0:
+                        filtered_content.append(csv_rows[0]) # Add header
+                    if start_time <= content_time and content_time < end_time:
+                        filtered_content.append('\n'.join(csv_rows[1:]))
+
+
+            data_payload = '\n'.join(filtered_content)
+            body = {
+                'requests': [{
+                    'pasteData': {
+                        "coordinate": {
+                            "sheetId": wks.id,
+                            "rowIndex": 0,
+                            "columnIndex": 0,
+                        },
+                        "data": data_payload,
+                        "type": 'PASTE_NORMAL',
+                        "delimiter": ',',
+                    }
+                }]
+            }
+            response = sheet.batch_update(body)
             return response
 
         def upload_to_s3():
@@ -193,6 +257,8 @@ def create_dag(dag_id, args):
 
         upload_to_gsheet_task = create_dynamic_etl('upload_to_gsheet', upload_to_gsheet)
 
+        upload_to_gsheet_summary_task = create_dynamic_etl('upload_to_gsheet_summary', upload_to_gsheet_summary)
+
         upload_to_s3_task = create_dynamic_etl('upload_to_s3', upload_to_s3)
 
         upload_to_snowflake_task = upload_to_snowflake('upload_to_snowflake')
@@ -201,7 +267,8 @@ def create_dag(dag_id, args):
         #cleanup_output_folder_task >> execute_notebook_task
         start >> execute_notebook_task
         execute_notebook_task >> upload_to_gsheet_task
-        upload_to_gsheet_task >> upload_to_s3_task
+        upload_to_gsheet_task >> upload_to_gsheet_summary_task
+        upload_to_gsheet_summary_task >> upload_to_s3_task
         upload_to_s3_task >> upload_to_snowflake_task
         upload_to_snowflake_task >> end
 
