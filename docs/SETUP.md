@@ -26,6 +26,7 @@ Recommended if you have your own storage. Make sure to look at
 $ cp airflow-vars-sample.json airflow-vars.json
 [edit airflow-vars.json]
 $ source init.sh
+$ airflow initdb
 
 ```
 
