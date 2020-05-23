@@ -159,7 +159,7 @@ def create_dag(dag_id, args):
                     sheet.add_worksheet(title=tab_name, rows='100', cols='20')
                     wks = sheet.worksheet(tab_name)
                 with open(output_root + file_name, 'r') as csv:
-                    csv_contents = csv.read()
+                    csv_contents = csv.read().strip() # Remove spaces after last record
                     csv_rows = csv_contents.split('\n')
                     csv_content = csv_rows[1].split(',', 1)
                     end_time = datetime.now()
