@@ -22,10 +22,8 @@ from gspread.exceptions import WorksheetNotFound
 from oauth2client.service_account import ServiceAccountCredentials
 
 DAGS_FOLDER = conf.get('core', 'dags_folder')
-NOTEBOOKS_FOLDER = os.path.abspath(
-    conf.get('core', 'dags_folder') + "/../notebooks") + "/"
-OUTPUT_FOLDER = os.path.abspath(
-    conf.get('core', 'dags_folder') + "/../output") + "/"
+NOTEBOOKS_FOLDER = os.path.abspath(DAGS_FOLDER + '/../notebooks') + '/'
+OUTPUT_FOLDER = os.path.abspath(DAGS_FOLDER + '/../output') + '/'
 
 with open( DAGS_FOLDER + "/../config/refresh_schedules.json", 'r') as f:
     schedules = json.load(f)
@@ -36,7 +34,7 @@ def create_dag(dag_id, args):
     basename = args.get('basename')
 
     # notebook file, this will be executed, for example: /home/ec2-user/COVID-19-data/notebooks/JHU_COVID-19.ipynb
-    notebook_file = NOTEBOOKS_FOLDER + basename + ".ipynb"
+    notebook_file = NOTEBOOKS_FOLDER + basename + '.ipynb'
 
     # directory to look for output files
     output_root = OUTPUT_FOLDER
@@ -48,7 +46,7 @@ def create_dag(dag_id, args):
         dag_id=dag_id,
         default_args=args,
         max_active_runs=1,
-        schedule_interval=schedules["interval"].get(basename,None),
+        schedule_interval=schedules['interval'].get(basename,None),
         dagrun_timeout=timedelta(minutes=60)
     )
 
@@ -69,7 +67,7 @@ def create_dag(dag_id, args):
                 input_path=notebook_file,
                 output_path="/dev/null",
                 parameters=dict(
-                    {"output_folder": OUTPUT_FOLDER}),
+                    {'output_folder': OUTPUT_FOLDER}),
                 log_output=True,
                 report_mode=True
             )
